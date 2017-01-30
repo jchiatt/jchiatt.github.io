@@ -6,4 +6,4 @@
 * Add latest Medium articles
 * Add information about rafl
 * Add information about JXN Tech Entrepreneurs Meetup + Slack signup
-* ~Re-write in React~ :fire:
+* ~~Re-write in React~~ :fire:
