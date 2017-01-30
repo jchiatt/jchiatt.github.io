@@ -1,0 +1,19 @@
+h1{
+	font-size: 26px!important;
+	margin-bottom: 25px!important;
+}
+
+h2{
+	font-size: 34px!important;
+}
+
+@media (max-width: 480px) {
+  h1 {
+  	font-size: 20px!important;
+  }
+
+  h2 {
+    font-size: 26px!important;
+  }
+
+}
