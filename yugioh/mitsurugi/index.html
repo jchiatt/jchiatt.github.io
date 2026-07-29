@@ -19,19 +19,26 @@ html,body{margin:0;min-height:100%;background:#080a0d;color:#f1e8d4;font-family:
     if(!response.ok) throw new Error('HTTP '+response.status);
     const html=await response.text();
     const doc=new DOMParser().parseFromString(html,'text/html');
-    const order={
-      one:{id:'30271097',src:'https://images.ygoprodeck.com/images/cards/30271097.jpg',alt:'The Fallen and the Virtuous'},
-      two:{id:'70088809',src:'https://images.ygoprodeck.com/images/cards/70088809.jpg',alt:'Fydraulis Harmonia'},
-      three:{id:'19899073',src:'https://images.ygoprodeck.com/images/cards/19899073.jpg',alt:'Ame no Murakumo no Mitsurugi'}
+    const one=doc.querySelector('.card-art.one img');
+    const two=doc.querySelector('.card-art.two img');
+    const three=doc.querySelector('.card-art.three img');
+    if(!one||!two||!three) throw new Error('Missing hero artwork');
+
+    // The archived hosted build had Murakumo / Fallen / Fydraulis.
+    // Restore the original composition: Fallen / Fydraulis / Murakumo,
+    // while preserving the exact embedded image crops and compression.
+    const original={
+      one:{src:one.src,alt:one.alt},
+      two:{src:two.src,alt:two.alt},
+      three:{src:three.src,alt:three.alt}
     };
-    for(const [position,card] of Object.entries(order)){
-      const figure=doc.querySelector('.card-art.'+position);
-      const image=figure?.querySelector('img');
-      if(!figure||!image) throw new Error('Missing hero artwork position '+position);
-      figure.dataset.art=card.id;
-      image.src=card.src;
-      image.alt=card.alt;
-    }
+    one.src=original.two.src;
+    one.alt=original.two.alt;
+    two.src=original.three.src;
+    two.alt=original.three.alt;
+    three.src=original.one.src;
+    three.alt=original.one.alt;
+
     document.open();
     document.write('<!doctype html>'+doc.documentElement.outerHTML);
     document.close();
